@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CropConnect — Directly Connecting Karnataka's Farmers with Bulk Produce Buyers</title>
+  <meta name="description" content="Karnataka's premier B2B farm-to-buyer marketplace. Transparent wholesale rates, 24-48h pre-orders for caterers and hoteliers, and WhatsApp-native procurement.">
+  
+  <!-- Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            soil: {
+              900: '#0f1715',
+              950: '#080d0c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Custom High-End Aesthetics */
+    body {
+      background-color: #080d0c;
+      color: #f1f5f3;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .glow-sphere {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    /* Double Bezel Card */
+    .double-bezel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.5rem;
+      padding: 0.375rem;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .double-bezel:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+      transform: translateY(-2px);
+    }
+    .bezel-core {
+      background: rgba(14, 22, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 1.25rem;
+      padding: 1.75rem;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Custom button-in-button */
+    .btn-island {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-island:hover .btn-icon-wrapper {
+      transform: translateX(4px) translateY(-1px) scale(1.05);
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+  </style>
+</head>
+<body class="relative min-h-screen selection:bg-brand-500 selection:text-soil-950">
+
+  <!-- Ambient Light Orbs -->
+  <div class="glow-sphere w-[550px] h-[550px] bg-emerald-600/15 top-[-100px] left-1/2 -translate-x-1/2"></div>
+  <div class="glow-sphere w-[400px] h-[400px] bg-green-500/10 top-[900px] right-[-100px]"></div>
+  <div class="glow-sphere w-[450px] h-[450px] bg-emerald-800/15 top-[1800px] left-[-150px]"></div>
+
+  <!-- FLOATING DETACHED PILL NAVBAR -->
+  <header class="fixed top-5 inset-x-0 z-50 px-4">
+    <div class="max-w-6xl mx-auto backdrop-blur-xl bg-soil-900/80 border border-white/10 rounded-full px-5 py-3 flex items-center justify-between shadow-2xl">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-full bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-500 font-bold text-lg group-hover:scale-105 transition-transform">
+          🌱
+        </div>
+        <div>
+          <span class="text-lg font-extrabold tracking-tight text-white flex items-center gap-1.5">
+            CropConnect
+            <span class="text-[10px] uppercase font-semibold tracking-wider text-brand-500 bg-brand-500/10 px-2 py-0.5 rounded-full border border-brand-500/20">Karnataka</span>
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-300">
+        <a href="#problem" class="hover:text-brand-500 transition-colors">The Challenge</a>
+        <a href="#solution" class="hover:text-brand-500 transition-colors">Our Solution</a>
+        <a href="#rates" class="hover:text-brand-500 transition-colors">Live Rate Sheet</a>
+        <a href="#whatsapp" class="hover:text-brand-500 transition-colors">WhatsApp Engine</a>
+        <a href="#impact" class="hover:text-brand-500 transition-colors">Economics</a>
+      </nav>
+
+      <!-- Desktop CTAs -->
+      <div class="hidden sm:flex items-center gap-3">
+        <button onclick="openModal('farmerModal')" class="text-xs font-semibold px-4 py-2.5 rounded-full border border-white/10 hover:border-brand-500/40 text-zinc-300 hover:text-white transition-all bg-white/5">
+          For Farmers
+        </button>
+        <button onclick="openModal('ratesModal')" class="btn-island flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full bg-brand-500 hover:bg-brand-400 text-soil-950 font-bold transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+          <span>Get Daily Rates</span>
+          <div class="btn-icon-wrapper w-6 h-6 rounded-full bg-soil-950/15 flex items-center justify-center transition-transform">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-zinc-400 hover:text-white" aria-label="Toggle Navigation">
+        <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Modal -->
+    <div id="mobileMenu" class="hidden md:hidden mt-3 max-w-sm mx-auto backdrop-blur-2xl bg-soil-900/95 border border-white/10 rounded-2xl p-5 shadow-2xl flex flex-col gap-4 text-center">
+      <a href="#problem" onclick="toggleMobileMenu()" class="py-2 text-zinc-300 hover:text-brand-500 text-sm font-medium">The Challenge</a>
+      <a href="#solution" onclick="toggleMobileMenu()" class="py-2 text-zinc-300 hover:text-brand-500 text-sm font-medium">Our Solution</a>
+      <a href="#rates" onclick="toggleMobileMenu()" class="py-2 text-zinc-300 hover:text-brand-500 text-sm font-medium">Live Rate Sheet</a>
+      <a href="#whatsapp" onclick="toggleMobileMenu()" class="py-2 text-zinc-300 hover:text-brand-500 text-sm font-medium">WhatsApp Engine</a>
+      <div class="pt-2 border-t border-white/10 flex flex-col gap-2">
+        <button onclick="toggleMobileMenu(); openModal('ratesModal')" class="w-full py-3 rounded-full bg-brand-500 text-soil-950 font-bold text-sm">
+          Request Daily Wholesale Rates
+        </button>
+        <button onclick="toggleMobileMenu(); openModal('farmerModal')" class="w-full py-2.5 rounded-full border border-white/10 text-white text-sm">
+          Register as a Farmer
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-36 pb-20 md:pt-48 md:pb-32 px-4 max-w-6xl mx-auto text-center">
+    <!-- Eyebrow Pill -->
+    <div class="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] font-semibold text-brand-500 bg-brand-500/10 border border-brand-500/20 mb-6 backdrop-blur-sm">
+      <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+      Direct Agri-Trade • Karnataka Hub
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.08]">
+      Directly Connecting Karnataka's Farmers with <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-emerald-400 to-green-200">Bulk Produce Buyers</span>.
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="mt-6 text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+      Cut out 3–5 layers of mandi middlemen. We empower caterers, wedding planners, and hotel chains to pre-book fresh harvests 24–48 hours ahead directly from regional grower clusters at transparent wholesale rates.
+    </p>
+
+    <!-- CTAs -->
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <button onclick="openModal('ratesModal')" class="btn-island w-full sm:w-auto flex items-center justify-center gap-3 px-7 py-3.5 rounded-full bg-brand-500 hover:bg-brand-400 text-soil-950 font-bold text-sm transition-all shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+        <span>Request Daily Wholesale Rates</span>
+        <div class="btn-icon-wrapper w-7 h-7 rounded-full bg-soil-950/15 flex items-center justify-center transition-transform">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </div>
+      </button>
+
+      <button onclick="openModal('farmerModal')" class="w-full sm:w-auto px-7 py-3.5 rounded-full border border-white/15 hover:border-brand-500/50 text-white font-semibold text-sm transition-all bg-white/5 hover:bg-white/10 flex items-center justify-center gap-2">
+        <svg class="w-4 h-4 text-brand-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+        Register as a Farmer
+      </button>
+    </div>
+
+    <!-- Live Social Proof & Metrics -->
+    <div class="mt-16 pt-8 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-left">
+      <div>
+        <div class="text-3xl font-extrabold text-white tracking-tight">35%<span class="text-brand-500">+</span></div>
+        <p class="text-xs text-zinc-400 mt-1">Higher Net Income for Regional Farmers</p>
+      </div>
+      <div>
+        <div class="text-3xl font-extrabold text-white tracking-tight">18–25%</div>
+        <p class="text-xs text-zinc-400 mt-1">Procurement Savings for Bulk Caterers</p>
+      </div>
+      <div>
+        <div class="text-3xl font-extrabold text-white tracking-tight">24–48h</div>
+        <p class="text-xs text-zinc-400 mt-1">Guaranteed Advance Pre-Order Lead Times</p>
+      </div>
+      <div>
+        <div class="text-3xl font-extrabold text-white tracking-tight">&lt;2%</div>
+        <p class="text-xs text-zinc-400 mt-1">Transit Wastage (vs. 35% Mandi Benchmark)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE WHOLESALE RATE TICKER / PREVIEW -->
+  <section id="rates" class="py-12 px-4 max-w-6xl mx-auto">
+    <div class="double-bezel">
+      <div class="bezel-core">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/5">
+          <div>
+            <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-500">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              LIVE KARNATAKA HARVEST RATES (BENGALURU / KOLAR BELT)
+            </div>
+            <h3 class="text-xl font-bold text-white mt-1">Daily Transparent Wholesale Benchmarks</h3>
+          </div>
+          <div class="text-xs text-zinc-400 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+            Updated today: 05:30 AM IST (FPO Verified)
+          </div>
+        </div>
+
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="text-xs text-zinc-400 uppercase tracking-wider border-b border-white/10">
+                <th class="pb-3 font-semibold">Produce & Grade</th>
+                <th class="pb-3 font-semibold">Origin Hub</th>
+                <th class="pb-3 font-semibold">Traditional Mandi Price</th>
+                <th class="pb-3 font-semibold text-brand-500">CropConnect Direct</th>
+                <th class="pb-3 font-semibold">Farmer Realization</th>
+                <th class="pb-3 font-semibold text-right">Pre-Order Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-zinc-300">
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-4 font-semibold text-white flex items-center gap-2">
+                  <span>🍅</span> Tomato (Hybrid Grade A)
+                </td>
+                <td class="py-4 text-xs text-zinc-400">Kolar FPO Cluster</td>
+                <td class="py-4 text-zinc-500 line-through">₹38 / kg</td>
+                <td class="py-4 font-bold text-emerald-400">₹29 / kg</td>
+                <td class="py-4 text-xs"><span class="text-brand-500 font-medium">+38% vs Mandi</span></td>
+                <td class="py-4 text-right">
+                  <button onclick="quickReserve('Tomato Grade A', 'Kolar', '29')" class="text-xs bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-soil-950 font-semibold px-3 py-1.5 rounded-full border border-brand-500/20 transition-all">
+                    Pre-Book
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-4 font-semibold text-white flex items-center gap-2">
+                  <span>🫑</span> Shimla Capsicum (Green)
+                </td>
+                <td class="py-4 text-xs text-zinc-400">Chikkaballapur Polyhouses</td>
+                <td class="py-4 text-zinc-500 line-through">₹62 / kg</td>
+                <td class="py-4 font-bold text-emerald-400">₹48 / kg</td>
+                <td class="py-4 text-xs"><span class="text-brand-500 font-medium">+31% vs Mandi</span></td>
+                <td class="py-4 text-right">
+                  <button onclick="quickReserve('Shimla Capsicum', 'Chikkaballapur', '48')" class="text-xs bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-soil-950 font-semibold px-3 py-1.5 rounded-full border border-brand-500/20 transition-all">
+                    Pre-Book
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-4 font-semibold text-white flex items-center gap-2">
+                  <span>🧅</span> Nashik / Belagavi Onion (Medium)
+                </td>
+                <td class="py-4 text-xs text-zinc-400">Belagavi Grower Alliance</td>
+                <td class="py-4 text-zinc-500 line-through">₹44 / kg</td>
+                <td class="py-4 font-bold text-emerald-400">₹36 / kg</td>
+                <td class="py-4 text-xs"><span class="text-brand-500 font-medium">+28% vs Mandi</span></td>
+                <td class="py-4 text-right">
+                  <button onclick="quickReserve('Belagavi Onion', 'Belagavi', '36')" class="text-xs bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-soil-950 font-semibold px-3 py-1.5 rounded-full border border-brand-500/20 transition-all">
+                    Pre-Book
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-4 font-semibold text-white flex items-center gap-2">
+                  <span>🍌</span> Robusta / Yelakki Banana
+                </td>
+                <td class="py-4 text-xs text-zinc-400">Mandya Organic Belt</td>
+                <td class="py-4 text-zinc-500 line-through">₹55 / kg</td>
+                <td class="py-4 font-bold text-emerald-400">₹42 / kg</td>
+                <td class="py-4 text-xs"><span class="text-brand-500 font-medium">+42% vs Mandi</span></td>
+                <td class="py-4 text-right">
+                  <button onclick="quickReserve('Yelakki Banana', 'Mandya', '42')" class="text-xs bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-soil-950 font-semibold px-3 py-1.5 rounded-full border border-brand-500/20 transition-all">
+                    Pre-Book
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: THE CORE PROBLEM (THE BROKEN MANDI CHAIN) -->
+  <section id="problem" class="py-24 px-4 max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-red-400 bg-red-400/10 border border-red-400/20 mb-3">
+        The Industry Crisis
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        The Traditional Mandi System is Costing Everyone.
+      </h2>
+      <p class="mt-4 text-zinc-400">
+        Between the farm gate and the hotel kitchen, 4 to 6 non-value-adding middlemen inflate costs, delay delivery, and allow fresh produce to spoil.
+      </p>
+    </div>
+
+    <!-- Asymmetrical Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Card 1 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-6 text-xl">
+              📉
+            </div>
+            <span class="text-xs font-semibold text-red-400 tracking-wider uppercase">Pain Point 01</span>
+            <h3 class="text-xl font-bold text-white mt-1">Unfair Pricing for Farmers</h3>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              Growers sacrifice <strong>30% to 50%</strong> of their earned crop margin to unregulated commission agents, mandi weighing fees, and loading kickbacks. They bear 100% of the climate risk for the lowest yield share.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 text-xs text-zinc-500">
+            Result: Farmers forced into chronic debt cycles.
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-6 text-xl">
+              ⚡
+            </div>
+            <span class="text-xs font-semibold text-amber-400 tracking-wider uppercase">Pain Point 02</span>
+            <h3 class="text-xl font-bold text-white mt-1">Quality & Supply Volatility</h3>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              Wedding caterers and hotel chefs endure erratic price surges and uninspected quality mixing. A sudden 40% tomato price spike on the day of a 2,000-guest reception crushes caterer bottom lines.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 text-xs text-zinc-500">
+            Result: Catering margins vanish on event day.
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-6 text-xl">
+              🗑️
+            </div>
+            <span class="text-xs font-semibold text-orange-400 tracking-wider uppercase">Pain Point 03</span>
+            <h3 class="text-xl font-bold text-white mt-1">Severe Perishable Produce Wastage</h3>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              Without advance pre-order matching, farmers harvest speculatively. Unsold crates sit in hot mandi yards for days, causing up to <strong>40% rotting and post-harvest dump losses</strong>.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 text-xs text-zinc-500">
+            Result: Millions of tons of nutritious food wasted.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE CROPPCONNECT SOLUTION -->
+  <section id="solution" class="py-24 px-4 max-w-6xl mx-auto relative">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-brand-500 bg-brand-500/10 border border-brand-500/20 mb-3">
+        The CropConnect Framework
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        A Direct, Transparent, Demand-Driven Marketplace.
+      </h2>
+      <p class="mt-4 text-zinc-400">
+        Engineered specifically for Karnataka's agricultural corridors and bulk hospitality buyers.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Solution 1 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 text-xl">
+            🤝
+          </div>
+          <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Pillar 01</span>
+          <h3 class="text-xl font-bold text-white mt-1">Direct Farmer Marketplace</h3>
+          <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+            Eliminates exploitative broker layers. Regional Farmer Producer Organizations (FPOs) and independent growers connect directly with verified caterers, hotel purchasing managers, and event agents at true fair-market wholesale rates.
+          </p>
+          <ul class="mt-6 space-y-2 text-xs text-zinc-300">
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Standardized A/B quality grading protocols
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Zero commission skimming or hidden loading fees
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Solution 2 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 text-xl">
+            📅
+          </div>
+          <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Pillar 02</span>
+          <h3 class="text-xl font-bold text-white mt-1">Dynamic 24–48h Pre-Order</h3>
+          <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+            Caterers lock in bulk quantities 1 to 2 days prior to their events. Farmers harvest only confirmed orders, cutting warehouse decay to virtually zero while buyers receive produce within 14 hours of field picking.
+          </p>
+          <ul class="mt-6 space-y-2 text-xs text-zinc-300">
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Guaranteed delivery slots for banquet venues
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Fixed forward rate protection against day-of spikes
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Solution 3 -->
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 text-xl">
+            💬
+          </div>
+          <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Pillar 03</span>
+          <h3 class="text-xl font-bold text-white mt-1">WhatsApp-First Workflow</h3>
+          <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+            No complex app downloads for rural growers. Farmers receive voice notes and Kannada text alerts; buyers receive daily morning rate cards and 1-click WhatsApp order confirmation cards.
+          </p>
+          <ul class="mt-6 space-y-2 text-xs text-zinc-300">
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Works on low-bandwidth 2G/3G rural networks
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Real-time dispatch & truck driver tracking link
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE WHATSAPP FLOW SIMULATOR -->
+  <section id="whatsapp" class="py-24 px-4 max-w-5xl mx-auto">
+    <div class="double-bezel">
+      <div class="bezel-core bg-gradient-to-b from-[#0b1613] to-[#07110e]">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div>
+            <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 mb-3">
+              Frictionless B2B UX
+            </div>
+            <h3 class="text-3xl font-extrabold text-white">How It Works in WhatsApp</h3>
+            <p class="mt-4 text-zinc-300 text-sm leading-relaxed">
+              Neither farmers nor busy wedding caterers want to spend 20 minutes navigating a complicated app. CropConnect runs directly where Karnataka's trade already happens — WhatsApp.
+            </p>
+
+            <div class="mt-8 space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+                <div>
+                  <h4 class="text-sm font-semibold text-white">06:00 AM Rate Blast</h4>
+                  <p class="text-xs text-zinc-400">Buyers receive morning wholesale rate sheets filtered by category (vegetables, exotics, fruits).</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+                <div>
+                  <h4 class="text-sm font-semibold text-white">1-Click Harvest Reservation</h4>
+                  <p class="text-xs text-zinc-400">Caterer specifies event date, crate quantities, and drop-off venue location.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+                <div>
+                  <h4 class="text-sm font-semibold text-white">Automated FPO Harvesting Ping</h4>
+                  <p class="text-xs text-zinc-400">Partner farmers receive dispatch tokens, batch stickers, and prompt UPI/NEFT escrow payment.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WhatsApp Chat Mockup -->
+          <div class="bg-[#0b141a] rounded-2xl border border-white/10 p-4 shadow-2xl max-w-sm mx-auto w-full">
+            <!-- Chat Header -->
+            <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+              <div class="w-9 h-9 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold text-sm">
+                CC
+              </div>
+              <div>
+                <div class="text-xs font-bold text-white flex items-center gap-1">
+                  CropConnect Bot
+                  <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                </div>
+                <div class="text-[10px] text-zinc-400">Verified Business Account</div>
+              </div>
+            </div>
+
+            <!-- Messages Stream -->
+            <div class="py-4 space-y-3 text-xs">
+              <div class="bg-[#1f2c34] text-zinc-200 p-2.5 rounded-lg rounded-tl-none max-w-[85%] border border-white/5">
+                <span class="text-brand-400 font-bold">Good morning Suresh Caterers! 🌅</span><br>
+                Today's Kolar harvest rates are live. Grade A Tomatoes: ₹29/kg, Capsicum: ₹48/kg.<br>
+                <span class="text-[9px] text-zinc-400 block text-right mt-1">06:02 AM</span>
+              </div>
+
+              <div class="bg-[#005c4b] text-white p-2.5 rounded-lg rounded-tr-none max-w-[80%] ml-auto">
+                Need 400kg Tomato Grade A and 150kg Capsicum for Palace Grounds wedding on Friday 6 AM.
+                <span class="text-[9px] text-emerald-200 block text-right mt-1">06:05 AM</span>
+              </div>
+
+              <div class="bg-[#1f2c34] text-zinc-200 p-2.5 rounded-lg rounded-tl-none max-w-[85%] border border-white/5">
+                ✅ <strong>Pre-Booking Confirmed!</strong><br>
+                • Order ID: #CC-8421<br>
+                • Total: ₹18,800 (Save ₹5,200 vs Mandi)<br>
+                • Harvest Assigned: Kolar Cluster #04<br>
+                • Delivery: Fri 24-Oct 05:30 AM<br>
+                <div class="mt-2 pt-2 border-t border-white/10 flex gap-2">
+                  <span class="bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded text-[10px]">Track Crate 🚚</span>
+                </div>
+                <span class="text-[9px] text-zinc-400 block text-right mt-1">06:06 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESS & MONETIZATION MODEL -->
+  <section id="impact" class="py-24 px-4 max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-brand-500 bg-brand-500/10 border border-brand-500/20 mb-3">
+        Sustainable Economics
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        High Volume, Low Margin, Fair Value.
+      </h2>
+      <p class="mt-4 text-zinc-400">
+        CropConnect operates on a transparent 3–5% transaction fee, creating a win-win financial ecosystem.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="text-3xl font-extrabold text-brand-500">3–5%</div>
+          <h3 class="text-lg font-bold text-white mt-2">B2B Platform Fee</h3>
+          <p class="mt-2 text-xs text-zinc-400 leading-relaxed">
+            Charged transparently on completed bulk shipments. Far lower than the 15–25% cumulative commission fees extracted in APMC physical mandis.
+          </p>
+        </div>
+      </div>
+
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="text-3xl font-extrabold text-brand-500">Logistics +</div>
+          <h3 class="text-lg font-bold text-white mt-2">Fulfillment Pooling</h3>
+          <p class="mt-2 text-xs text-zinc-400 leading-relaxed">
+            Consolidated crate transportation from farming clusters to urban delivery zones. Revenue earned through micro-logistics optimization and standardized returnable plastic crate rentals.
+          </p>
+        </div>
+      </div>
+
+      <div class="double-bezel">
+        <div class="bezel-core h-full">
+          <div class="text-3xl font-extrabold text-brand-500">T+0</div>
+          <h3 class="text-lg font-bold text-white mt-2">Instant Farmer Settlement</h3>
+          <p class="mt-2 text-xs text-zinc-400 leading-relaxed">
+            Farmers receive direct bank transfers upon truck weigh-in. Eliminates the 60-day delayed IOUs common with traditional commission agents.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="py-20 px-4 max-w-4xl mx-auto text-center">
+    <div class="double-bezel">
+      <div class="bezel-core py-12 px-6">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Ready to Transform Your Produce Sourcing?
+        </h2>
+        <p class="mt-4 text-zinc-400 max-w-xl mx-auto text-sm">
+          Whether you are a caterer planning this weekend's banquets or a farmer ready to earn fair value for your crop, CropConnect is live today.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="openModal('ratesModal')" class="btn-island px-8 py-3.5 rounded-full bg-brand-500 hover:bg-brand-400 text-soil-950 font-bold text-sm shadow-[0_0_25px_rgba(34,197,94,0.3)] flex items-center gap-3">
+            <span>Request Daily Wholesale Rates</span>
+            <div class="btn-icon-wrapper w-6 h-6 rounded-full bg-soil-950/15 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </div>
+          </button>
+          <button onclick="openModal('farmerModal')" class="px-6 py-3.5 rounded-full border border-white/10 hover:border-brand-500/40 text-white font-semibold text-sm bg-white/5">
+            Register as a Farmer
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/5 text-xs text-zinc-500 px-4 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="text-brand-500">🌱</span>
+      <span class="font-bold text-white">CropConnect Karnataka</span>
+      <span>• Hosted at crop-marketplace-18.emergent.host</span>
+    </div>
+    <div>
+      © 2026 CropConnect Technologies. Built for Karnataka's Farmers & Hospitality Leaders.
+    </div>
+  </footer>
+
+  <!-- MODAL: REQUEST DAILY RATES -->
+  <div id="ratesModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="double-bezel max-w-md w-full">
+      <div class="bezel-core">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10">
+          <h3 class="text-lg font-bold text-white">Request Daily Wholesale Rates</h3>
+          <button onclick="closeModal('ratesModal')" class="text-zinc-400 hover:text-white p-1">✕</button>
+        </div>
+
+        <form id="ratesForm" onsubmit="handleRatesSubmit(event)" class="mt-4 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Your Name / Business Name</label>
+            <input type="text" required placeholder="e.g. Royal Caterers / Grand Hotel" class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">WhatsApp Number</label>
+            <input type="tel" required placeholder="+91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Primary Delivery City / Area</label>
+            <select class="w-full px-3.5 py-2.5 rounded-xl bg-soil-900 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+              <option>Bengaluru (Palace Grounds / Central)</option>
+              <option>Bengaluru (Electronic City / South)</option>
+              <option>Bengaluru (Whitefield / East)</option>
+              <option>Mysuru Hub</option>
+              <option>Hubballi-Dharwad</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Estimated Weekly Produce Volume</label>
+            <select class="w-full px-3.5 py-2.5 rounded-xl bg-soil-900 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+              <option>200 kg – 500 kg / week</option>
+              <option>500 kg – 2,000 kg / week</option>
+              <option>2,000 kg+ / week (Large Event / Hotel)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-full bg-brand-500 hover:bg-brand-400 text-soil-950 font-bold text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+            Send Me Daily WhatsApp Rate Sheets
+          </button>
+        </form>
+
+        <div id="ratesSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center text-xs text-emerald-400">
+          🎉 <strong>Success!</strong> You have been enrolled. Check your WhatsApp for today's morning rate sheet!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTER AS A FARMER -->
+  <div id="farmerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="double-bezel max-w-md w-full">
+      <div class="bezel-core">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10">
+          <div>
+            <h3 class="text-lg font-bold text-white">Farmer / FPO Registration</h3>
+            <span class="text-[11px] text-brand-500">ರೈತರ ನೋಂದಣಿ (Direct Farm-to-Buyer)</span>
+          </div>
+          <button onclick="closeModal('farmerModal')" class="text-zinc-400 hover:text-white p-1">✕</button>
+        </div>
+
+        <form id="farmerForm" onsubmit="handleFarmerSubmit(event)" class="mt-4 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Farmer / FPO Lead Name</label>
+            <input type="text" required placeholder="e.g. Ramesh Gowda" class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Mobile / WhatsApp Number</label>
+            <input type="tel" required placeholder="+91 99000 12345" class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Farming Region / District</label>
+            <select class="w-full px-3.5 py-2.5 rounded-xl bg-soil-900 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+              <option>Kolar (Tomato / Exotics)</option>
+              <option>Chikkaballapur (Capsicum / Veg)</option>
+              <option>Mandya (Bananas / Sugarcane / Greens)</option>
+              <option>Belagavi (Onion / Potato / Veg)</option>
+              <option>Hassan / Shivamogga</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">Primary Crops Harvested</label>
+            <input type="text" required placeholder="e.g. Tomato, Green Chilli, Capsicum" class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500">
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-full bg-brand-500 hover:bg-brand-400 text-soil-950 font-bold text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+            Join CropConnect Network (ನೋಂದಾಯಿಸಿ)
+          </button>
+        </form>
+
+        <div id="farmerSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center text-xs text-emerald-400">
+          🌾 <strong>ಧನ್ಯವಾದಗಳು! (Thank You!)</strong> A CropConnect district coordinator will call or WhatsApp you within 2 hours.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function handleRatesSubmit(e) {
+      e.preventDefault();
+      document.getElementById('ratesForm').classList.add('hidden');
+      document.getElementById('ratesSuccess').classList.remove('hidden');
+    }
+
+    function handleFarmerSubmit(e) {
+      e.preventDefault();
+      document.getElementById('farmerForm').classList.add('hidden');
+      document.getElementById('farmerSuccess').classList.remove('hidden');
+    }
+
+    function quickReserve(item, hub, rate) {
+      openModal('ratesModal');
+    }
+  </script>
+</body>
+</html>
