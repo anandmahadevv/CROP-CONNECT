@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   MessageSquareCode, X, Send, Sparkles, Truck, CheckCircle2, 
-  ArrowUpRight, Bot, User, RefreshCw, Volume2, ShieldCheck, ChevronDown, Minimize2, Maximize2 
+  ArrowUpRight, Bot, User, RefreshCw, Volume2, ShieldCheck, 
+  ChevronDown, Minimize2, Maximize2, Share2, Copy, Play, Pause, Activity
 } from 'lucide-react';
 
 const INITIAL_MESSAGES = [
   {
     id: 1,
     sender: 'bot',
-    text: "Namaskara! 🙏 Welcome to CropConnect AI Assistant. Directly connecting Karnataka's FPO growers with bulk caterers and hoteliers.",
+    text: "Namaskara! 🙏 Welcome to CropConnect AI Assistant. Directly connecting Karnataka's FPO growers with bulk wedding caterers and hoteliers with zero middleman deductions.",
     timestamp: 'Just now',
     actions: [
       { label: "🍅 Today's Wholesale Rates", payload: "Show me today's wholesale rates" },
@@ -24,9 +25,10 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [copiedId, setCopiedId] = useState(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to bottom of chat
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -35,13 +37,18 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
     scrollToBottom();
   }, [messages, isTyping]);
 
-  // Handle external incoming prompt from Hero or Calculator
   useEffect(() => {
     if (initialPrompt && isOpen) {
       handleUserSubmit(initialPrompt);
       if (onActionHandled) onActionHandled();
     }
   }, [initialPrompt, isOpen]);
+
+  const handleCopy = (id, text) => {
+    navigator.clipboard?.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
   const handleUserSubmit = (textToSend) => {
     const text = textToSend || inputValue.trim();
@@ -58,12 +65,11 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response logic
     setTimeout(() => {
       const botResponse = generateAIResponse(text);
       setMessages((prev) => [...prev, botResponse]);
       setIsTyping(false);
-    }, 800);
+    }, 750);
   };
 
   const generateAIResponse = (query) => {
@@ -80,8 +86,8 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
         card: {
           type: 'rates',
           data: [
-            { item: '🍅 Tomato Hybrid (Grade A)', origin: 'Kolar Hub', direct: '₹29/kg', mandi: '₹38/kg', gain: '+38% to Farmer' },
-            { item: '🫑 Shimla Capsicum', origin: 'Chikkaballapur', direct: '₹48/kg', mandi: '₹62/kg', gain: '+32% to Farmer' },
+            { item: '🍅 Tomato Hybrid (Grade A+)', origin: 'Kolar FPO Belt', direct: '₹29/kg', mandi: '₹38/kg', gain: '+38% to Farmer' },
+            { item: '🫑 Shimla Capsicum (Crisp)', origin: 'Chikkaballapur', direct: '₹48/kg', mandi: '₹62/kg', gain: '+32% to Farmer' },
             { item: '🧅 Belagavi Red Onion', origin: 'Belagavi Cluster', direct: '₹35/kg', mandi: '₹44/kg', gain: '+28% to Farmer' },
             { item: '🍌 Yelakki Banana', origin: 'Mandya Cluster', direct: '₹42/kg', mandi: '₹58/kg', gain: '+42% to Farmer' }
           ]
@@ -89,35 +95,36 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
         actions: [
           { label: "Reserve 500kg Tomatoes", payload: "Book 500kg Tomato Grade A for Friday" },
           { label: "Reserve 200kg Capsicum", payload: "Book 200kg Shimla Capsicum" },
-          { label: "Download WhatsApp PDF Sheet", payload: "Send daily rate sheet to my WhatsApp" }
+          { label: "WhatsApp PDF Sheet", payload: "Send daily rate sheet to my WhatsApp" }
         ]
       };
     }
 
     // 2. Pre-Book / Order Flow
-    if (q.includes('book') || q.includes('order') || q.includes('wedding') || q.includes('event') || q.includes('cater')) {
+    if (q.includes('book') || q.includes('order') || q.includes('wedding') || q.includes('event') || q.includes('cater') || q.includes('calculated')) {
+      const tokenNum = Math.floor(1000 + Math.random() * 9000);
       return {
         id: Date.now() + 1,
         sender: 'bot',
-        text: "🎉 Excellent! I have generated a 48-Hour Price Lock Pre-Booking Token for your event:",
+        text: "🎉 Excellent! I have generated your 48-Hour Price Lock Forward Contract Token for your event:",
         timestamp: time,
         card: {
           type: 'order_confirmation',
-          orderId: 'CC-' + Math.floor(1000 + Math.random() * 9000),
+          orderId: `CC-${tokenNum}`,
           summary: 'Direct Farm Harvest Reservation',
           details: [
             { label: 'Reserved Produce', value: '🍅 Tomatoes (400kg) + 🫑 Capsicum (150kg)' },
             { label: 'Assigned Cluster', value: 'Kolar FPO Corridor #04' },
-            { label: 'Lock-In Rate', value: '₹18,800 (Fixed 48h Lock)' },
+            { label: 'Forward Rate Lock', value: '₹18,800 (Guaranteed 48h Lock)' },
             { label: 'Your Direct Savings', value: '₹5,200 vs APMC Mandi (22%)' },
-            { label: 'Delivery Schedule', value: '05:30 AM (Pre-Harvest Cut)' },
-            { label: 'Delivery Venue', value: 'Palace Grounds / Bangalore Venue' }
+            { label: 'Delivery Schedule', value: '05:30 AM on Event Morning' },
+            { label: 'Delivery Destination', value: 'Palace Grounds / Bangalore Venue' }
           ],
           status: 'FORWARD CONTRACT ACTIVE'
         },
         actions: [
-          { label: "✅ Confirm & Send to WhatsApp", payload: "Confirm this order via WhatsApp alert" },
-          { label: "🚚 Live Delivery Tracking", payload: "Track order CC-8421" }
+          { label: "✅ Send Token to WhatsApp", payload: "Confirm this order via WhatsApp alert" },
+          { label: "🚚 Live Milk-Run Telematics", payload: "Track order CC-8421" }
         ]
       };
     }
@@ -129,19 +136,21 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
         sender: 'bot',
         text: "ನಮಸ್ಕಾರ ರೈತ ಬಾಂಧವರೇ! (Welcome Karnataka Farmer). CropConnect guarantees you 35%+ higher payout directly to your bank account with zero middleman deductions.",
         timestamp: time,
+        hasAudio: true,
+        audioTitle: "Voice Briefing from Kolar District Lead (Kannada)",
         card: {
           type: 'farmer_pass',
-          title: 'Direct FPO Grower Entry',
+          title: 'Direct FPO Grower Entry Pass',
           details: [
-            { label: 'Eligible Belts', value: 'Kolar, Chikkaballapur, Mandya, Belagavi, Haveri' },
+            { label: 'Eligible Corridors', value: 'Kolar, Chikkaballapur, Mandya, Belagavi, Haveri' },
             { label: 'Payment Terms', value: 'T+0 Direct Bank Transfer on Weigh-In' },
-            { label: 'Transportation', value: 'Consolidated Crates picked at Village Aggregation' },
+            { label: 'Crates & Pickup', value: 'Consolidated Crates picked at Village Aggregation' },
             { label: 'Commission Fee', value: '0% from Farmers (100% Free)' }
           ]
         },
         actions: [
           { label: "📝 Register Farm Details", payload: "I want to register my 3-acre tomato farm in Kolar" },
-          { label: "📞 Request District Coordinator Call", payload: "Please have a coordinator call my number" }
+          { label: "📞 Request Coordinator Call", payload: "Please have a coordinator call my number" }
         ]
       };
     }
@@ -157,29 +166,29 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
           type: 'tracking',
           orderId: '#CC-8421',
           vehicle: 'Tata Ace (KA-04-AB-8812)',
-          driver: 'Manjunath (Verified CropConnect Partner)',
-          currentLocation: 'NH-75 Hoskote Toll Expressway',
+          driver: 'Manjunath (Verified CropConnect Logistics)',
+          currentLocation: 'NH-75 Hoskote Toll Expressway (14km away)',
           crates: '28 Standard Ventilated Crates',
           temp: '18.2°C (Clipped 3 hours ago)',
           eta: '05:30 AM (On Time for Palace Grounds Kitchen)'
         },
         actions: [
-          { label: "Call Delivery Driver", payload: "Connecting to driver" },
-          { label: "Share Live GPS Link", payload: "Send live GPS tracking link to WhatsApp" }
+          { label: "📞 Call Delivery Driver", payload: "Connecting to driver" },
+          { label: "📍 Share Live GPS Link", payload: "Send live GPS tracking link to WhatsApp" }
         ]
       };
     }
 
-    // Default Fallback Response
+    // Fallback Response
     return {
       id: Date.now() + 1,
       sender: 'bot',
-      text: "I can help you lock in wholesale prices, pre-book fresh harvests for upcoming events, or onboard as an FPO grower in Karnataka. What would you like to do?",
+      text: "I can help you lock in wholesale prices, pre-book fresh harvests for upcoming events, or onboard as an FPO grower in Karnataka. What would you like to explore?",
       timestamp: time,
       actions: [
         { label: "Check Tomato & Capsicum Rates", payload: "Show me today's wholesale rates" },
         { label: "Pre-Book for Event", payload: "I want to pre-book produce for an upcoming event" },
-        { label: "How the 3-5% Platform Fee Works", payload: "Explain the CropConnect monetization model" }
+        { label: "Monetization: 3–5% Platform Fee", payload: "Explain the CropConnect monetization model" }
       ]
     };
   };
@@ -188,34 +197,37 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
 
   return (
     <div 
-      className={`fixed z-50 transition-all duration-300 ease-out shadow-2xl flex flex-col ${
+      className={`fixed z-50 transition-all duration-300 ease-out shadow-[0_25px_60px_rgba(0,0,0,0.85)] flex flex-col ${
         isExpanded 
-          ? 'inset-4 md:inset-10 rounded-2xl bg-[#0b1412] border border-emerald-500/30' 
-          : 'bottom-4 right-4 sm:bottom-6 sm:right-6 w-[95vw] sm:w-[420px] h-[600px] max-h-[85vh] rounded-3xl bg-[#0b1412]/95 border border-emerald-500/25 backdrop-blur-2xl'
+          ? 'inset-3 md:inset-8 rounded-3xl bg-[#091411] border border-emerald-500/40' 
+          : 'bottom-4 right-4 sm:bottom-6 sm:right-6 w-[95vw] sm:w-[440px] h-[620px] max-h-[88vh] rounded-3xl bg-[#091411]/98 border border-emerald-500/30 backdrop-blur-2xl'
       }`}
     >
-      {/* Chatbot Header */}
-      <div className="p-4 rounded-t-3xl bg-gradient-to-r from-[#0d1a16] to-[#08120f] border-b border-white/10 flex items-center justify-between">
+      {/* Header */}
+      <div className="p-4 rounded-t-3xl bg-gradient-to-r from-[#0c1c17] via-[#091512] to-[#07110e] border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
-              <Bot className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1px] shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+              <div className="w-full h-full bg-[#08120f] rounded-2xl flex items-center justify-center">
+                <Bot className="w-5 h-5 text-emerald-400" />
+              </div>
             </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#0b1412]"></span>
+            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#091411]"></span>
           </div>
+
           <div>
             <div className="flex items-center gap-1.5">
-              <h3 className="text-sm font-bold text-white">CropConnect Assistant</h3>
+              <h3 className="text-sm font-extrabold text-white">CropConnect Agri-AI</h3>
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             </div>
-            <div className="text-[10px] text-zinc-400 flex items-center gap-1.5">
+            <div className="text-[10px] text-zinc-400 flex items-center gap-1.5 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Kolar & Bengaluru Nodes Online
+              <span>Kolar & Bangalore Nodes Active • 38ms</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 text-zinc-400">
+        <div className="flex items-center gap-1 text-zinc-400">
           <button 
             onClick={() => setIsExpanded(!isExpanded)} 
             className="p-1.5 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
@@ -240,17 +252,18 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
         </div>
       </div>
 
-      {/* Voice Badge Banner */}
-      <div className="px-4 py-1.5 bg-emerald-500/10 border-b border-emerald-500/15 flex items-center justify-between text-[11px] text-emerald-400">
-        <span className="flex items-center gap-1.5">
-          <Volume2 className="w-3.5 h-3.5" /> WhatsApp Audio & Kannada Voice alerts enabled
+      {/* Voice Simulation Banner */}
+      <div className="px-4 py-2 bg-emerald-500/10 border-b border-emerald-500/15 flex items-center justify-between text-[11px] text-emerald-300">
+        <span className="flex items-center gap-2">
+          <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> 
+          <span>WhatsApp Audio & Kannada Voice notes enabled</span>
         </span>
-        <span className="text-[10px] uppercase font-bold tracking-wider bg-emerald-500/20 px-1.5 py-0.5 rounded">
-          Live B2B
+        <span className="text-[9px] uppercase font-bold tracking-wider bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">
+          Instant Bot
         </span>
       </div>
 
-      {/* Messages Scroll Area */}
+      {/* Message Stream */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar text-xs">
         {messages.map((msg) => (
           <div 
@@ -258,26 +271,47 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
             className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
           >
             <div 
-              className={`max-w-[85%] rounded-2xl p-3.5 leading-relaxed shadow-md ${
+              className={`max-w-[88%] rounded-2xl p-3.5 leading-relaxed shadow-lg ${
                 msg.sender === 'user'
-                  ? 'bg-emerald-600 text-white rounded-tr-none'
-                  : 'bg-[#14231f] text-zinc-200 border border-white/5 rounded-tl-none'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-tr-none'
+                  : 'bg-[#101f1b] text-zinc-200 border border-emerald-500/20 rounded-tl-none'
               }`}
             >
-              <p className="whitespace-pre-line">{msg.text}</p>
+              <p className="whitespace-pre-line text-xs font-normal">{msg.text}</p>
+
+              {/* Audio Player Mockup */}
+              {msg.hasAudio && (
+                <div className="mt-3 p-2.5 rounded-xl bg-black/40 border border-emerald-500/30 flex items-center gap-3">
+                  <button 
+                    onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+                    className="w-8 h-8 rounded-full bg-emerald-500 text-black flex items-center justify-center shrink-0 hover:scale-105 transition-transform"
+                  >
+                    {isPlayingAudio ? <Pause className="w-4 h-4 fill-black" /> : <Play className="w-4 h-4 fill-black ml-0.5" />}
+                  </button>
+                  <div className="flex-1">
+                    <div className="text-[10px] font-bold text-white">{msg.audioTitle}</div>
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="h-1 flex-1 bg-zinc-700 rounded-full overflow-hidden">
+                        <div className={`h-full bg-emerald-400 ${isPlayingAudio ? 'w-2/3 animate-pulse' : 'w-1/4'}`}></div>
+                      </div>
+                      <span className="text-[9px] text-zinc-400 font-mono">0:24</span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Rates Card */}
               {msg.card?.type === 'rates' && (
                 <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
                   {msg.card.data.map((r, i) => (
-                    <div key={i} className="p-2 rounded-lg bg-black/30 border border-white/5 flex items-center justify-between">
+                    <div key={i} className="p-2.5 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between">
                       <div>
                         <div className="font-bold text-white text-xs">{r.item}</div>
                         <div className="text-[10px] text-zinc-400">{r.origin}</div>
                       </div>
                       <div className="text-right">
-                        <div className="font-extrabold text-emerald-400 text-xs">{r.direct}</div>
-                        <div className="text-[10px] line-through text-zinc-500">{r.mandi}</div>
+                        <div className="font-extrabold text-emerald-400 text-xs font-mono">{r.direct}</div>
+                        <div className="text-[10px] line-through text-zinc-500 font-mono">{r.mandi}</div>
                       </div>
                     </div>
                   ))}
@@ -286,17 +320,26 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
 
               {/* Order Confirmation Card */}
               {msg.card?.type === 'order_confirmation' && (
-                <div className="mt-3 p-3.5 rounded-xl bg-black/40 border border-emerald-500/30 text-xs space-y-2">
+                <div className="mt-3 p-3.5 rounded-2xl bg-black/50 border border-emerald-500/30 text-xs space-y-2 shadow-inner">
                   <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <span className="font-extrabold text-emerald-400 text-sm">Token #{msg.card.orderId}</span>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">
-                      {msg.card.status}
-                    </span>
+                    <span className="font-extrabold text-emerald-400 text-sm font-mono">{msg.card.orderId}</span>
+                    <div className="flex items-center gap-1.5">
+                      <button 
+                        onClick={() => handleCopy(msg.card.orderId, msg.card.orderId)}
+                        className="text-[10px] text-zinc-400 hover:text-white flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded-md"
+                      >
+                        <Copy className="w-3 h-3" />
+                        {copiedId === msg.card.orderId ? 'Copied!' : 'Copy'}
+                      </button>
+                      <span className="text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">
+                        {msg.card.status}
+                      </span>
+                    </div>
                   </div>
                   {msg.card.details.map((d, i) => (
                     <div key={i} className="flex justify-between text-[11px]">
                       <span className="text-zinc-400">{d.label}:</span>
-                      <span className="text-white font-medium text-right">{d.value}</span>
+                      <span className="text-white font-semibold text-right">{d.value}</span>
                     </div>
                   ))}
                 </div>
@@ -304,8 +347,10 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
 
               {/* Farmer Pass Card */}
               {msg.card?.type === 'farmer_pass' && (
-                <div className="mt-3 p-3 rounded-xl bg-black/40 border border-emerald-500/30 text-xs space-y-1.5">
-                  <div className="font-bold text-emerald-400 text-xs">{msg.card.title}</div>
+                <div className="mt-3 p-3 rounded-2xl bg-black/50 border border-emerald-500/30 text-xs space-y-2">
+                  <div className="font-bold text-emerald-400 text-xs flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> {msg.card.title}
+                  </div>
                   {msg.card.details.map((d, i) => (
                     <div key={i} className="flex justify-between text-[11px]">
                       <span className="text-zinc-400">{d.label}:</span>
@@ -317,16 +362,16 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
 
               {/* Tracking Card */}
               {msg.card?.type === 'tracking' && (
-                <div className="mt-3 p-3 rounded-xl bg-black/40 border border-emerald-500/30 text-xs space-y-2">
+                <div className="mt-3 p-3 rounded-2xl bg-black/50 border border-emerald-500/30 text-xs space-y-2">
                   <div className="flex items-center justify-between font-bold text-emerald-400">
                     <span className="flex items-center gap-1.5">
                       <Truck className="w-4 h-4" /> {msg.card.vehicle}
                     </span>
                     <span className="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400 font-mono">
-                      LIVE GPS
+                      LIVE MILK-RUN GPS
                     </span>
                   </div>
-                  <div className="text-[11px] text-zinc-300">
+                  <div className="text-[11px] text-zinc-300 space-y-0.5">
                     <div>📍 <strong>Location:</strong> {msg.card.currentLocation}</div>
                     <div>📦 <strong>Cargo:</strong> {msg.card.crates}</div>
                     <div>❄️ <strong>Temp:</strong> {msg.card.temp}</div>
@@ -335,19 +380,19 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
                 </div>
               )}
 
-              <span className="text-[9px] text-zinc-400 block text-right mt-1.5">
+              <span className="text-[9px] text-zinc-500 block text-right mt-1.5">
                 {msg.timestamp}
               </span>
             </div>
 
-            {/* Quick Action Suggestion Chips */}
+            {/* Action Chips */}
             {msg.actions && msg.actions.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5 max-w-[90%]">
                 {msg.actions.map((action, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleUserSubmit(action.payload)}
-                    className="text-[11px] bg-white/5 hover:bg-emerald-500/20 text-zinc-300 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/30 rounded-full px-3 py-1 transition-all flex items-center gap-1"
+                    className="text-[11px] bg-white/[0.04] hover:bg-emerald-500/20 text-zinc-300 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded-full px-3 py-1 transition-all flex items-center gap-1 shadow-sm"
                   >
                     <span>{action.label}</span>
                     <ArrowUpRight className="w-3 h-3 opacity-60" />
@@ -360,7 +405,7 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
 
         {/* Animated Typing Indicator */}
         {isTyping && (
-          <div className="flex items-center gap-1.5 bg-[#14231f] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none w-max border border-white/5">
+          <div className="flex items-center gap-1.5 bg-[#101f1b] text-emerald-400 px-3.5 py-2.5 rounded-2xl rounded-tl-none w-max border border-emerald-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce"></span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.2s]"></span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.4s]"></span>
@@ -372,7 +417,7 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
       {/* Input Form Bar */}
       <form 
         onSubmit={(e) => { e.preventDefault(); handleUserSubmit(); }} 
-        className="p-3 bg-[#0d1a16] border-t border-white/10 flex items-center gap-2 rounded-b-3xl"
+        className="p-3 bg-[#0c1915] border-t border-white/10 flex items-center gap-2 rounded-b-3xl"
       >
         <input 
           type="text"
@@ -384,7 +429,7 @@ export default function Chatbot({ isOpen, onClose, initialPrompt, onActionHandle
         <button 
           type="submit"
           disabled={!inputValue.trim()}
-          className="w-9 h-9 rounded-full bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-black flex items-center justify-center transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0"
+          className="w-9 h-9 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 hover:brightness-110 disabled:opacity-40 text-black flex items-center justify-center transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0"
         >
           <Send className="w-4 h-4 text-black" />
         </button>
